@@ -42,7 +42,7 @@ class _RestaurantsPagesState extends State<RestaurantsPages> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: const Text('ReMeals', style: TextStyle(color: Colors.black),)),
+        title: Center(child: const Text('ReMeals', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),)),
         backgroundColor: Colors.transparent,
       ),
       body: isLoading
