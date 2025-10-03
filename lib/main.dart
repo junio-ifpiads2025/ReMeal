@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:remeal/navigation/bottom_navigation.dart';
-import 'package:remeal/pages/restaurants_page.dart';
 
 void main() {
   runApp(const MyApp());

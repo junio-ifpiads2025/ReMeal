@@ -1,44 +1,51 @@
 [
-  {
-    "id": 1,
-    "nome": "Cabana no Rio",
-    "descricao": "Restaurante de culinária regional e pratos clássicos",
-    "imagem": "https://raw.githubusercontent.com/junio-ifpiads2025/ReMeal/refs/heads/main/images/Cabana_no_Rio.png"
-  },
-  {
-    "id": 2,
-    "nome": "Don Ladino",
-    "descricao": "Gastronomia local, com diversas opções de pratos com frutos do mar, peixes e outras delicias da região. ",
-    "imagem": "https://raw.githubusercontent.com/junio-ifpiads2025/ReMeal/refs/heads/main/images/DonLadino.png"
-  },
-  {
-    "id": 3,
-    "nome": "Mangata",
-    "descricao": "Restaurante com ambiência Elegante e Moderna",
-    "imagem": "https://raw.githubusercontent.com/junio-ifpiads2025/ReMeal/refs/heads/main/images/Mangata.png"
-  },
-  {
-    "id": 4,
-    "nome": "Pollito Latino",
-    "descricao": "Restaurante de culinária latino-americana, com pratos típicos de colombianos",
-    "imagem": "https://raw.githubusercontent.com/junio-ifpiads2025/ReMeal/refs/heads/main/images/PollitoLatino.png"
-  },
-  {
-    "id": 5,
-    "nome": "Salt",
-    "descricao": "Cerveja gelada, pratos, petiscos e drinks especiais.",
-    "imagem": "https://raw.githubusercontent.com/junio-ifpiads2025/ReMeal/refs/heads/main/images/Salt.png"
-  },
-  {
-    "id": 6,
-    "nome": "Vino",
-    "descricao": "Restaurante e Bar de Vinhos para todos os momentos",
-    "imagem": "https://raw.githubusercontent.com/junio-ifpiads2025/ReMeal/refs/heads/main/images/Vino.png"
-  },
-  {
-    "id": 7,
-    "nome": "Terraço Happy Hour",
-    "descricao": "O Melhor happy Hour da cidade de Parnaíba.",
-    "imagem": "https://raw.githubusercontent.com/junio-ifpiads2025/ReMeal/refs/heads/main/images/terraco_happy_hour.png"
-  }
+    {
+        "id": 1,
+        "nome": "Cabana no Rio",
+        "descricao": "Restaurante de culinária regional e pratos clássicos",
+        "imagem": "https://raw.githubusercontent.com/junio-ifpiads2025/ReMeal/refs/heads/main/images/Cabana_no_Rio.png",
+        "rating": 4.2
+    },
+    {
+        "id": 2,
+        "nome": "Don Ladino",
+        "descricao": "Gastronomia local, com diversas opções de pratos com frutos do mar, peixes e outras delicias da região. ",
+        "imagem": "https://raw.githubusercontent.com/junio-ifpiads2025/ReMeal/refs/heads/main/images/DonLadino.png",
+        "rating": 5.0
+    },
+    {
+        "id": 3,
+        "nome": "Mangata",
+        "descricao": "Restaurante com ambiência Elegante e Moderna",
+        "imagem": "https://raw.githubusercontent.com/junio-ifpiads2025/ReMeal/refs/heads/main/images/Mangata.png",
+        "rating": 4.1
+    },
+    {
+        "id": 4,
+        "nome": "Pollito Latino",
+        "descricao": "Restaurante de culinária latino-americana, com pratos típicos de colombianos",
+        "imagem": "https://raw.githubusercontent.com/junio-ifpiads2025/ReMeal/refs/heads/main/images/PollitoLatino.png",
+        "rating": 4.3
+    },
+    {
+        "id": 5,
+        "nome": "Salt",
+        "descricao": "Cerveja gelada, pratos, petiscos e drinks especiais.",
+        "imagem": "https://raw.githubusercontent.com/junio-ifpiads2025/ReMeal/refs/heads/main/images/Salt.png",
+        "rating": 3.7
+    },
+    {
+        "id": 6,
+        "nome": "Vino",
+        "descricao": "Restaurante e Bar de Vinhos para todos os momentos",
+        "imagem": "https://raw.githubusercontent.com/junio-ifpiads2025/ReMeal/refs/heads/main/images/Vino.png",
+        "rating": 4.7
+    },
+    {
+        "id": 7,
+        "nome": "Terraço Happy Hour",
+        "descricao": "O Melhor happy Hour da cidade de Parnaíba.",
+        "imagem": "https://raw.githubusercontent.com/junio-ifpiads2025/ReMeal/refs/heads/main/images/terraco_happy_hour.png",
+        "rating": 3.0
+    }
 ]
