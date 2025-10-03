@@ -10,6 +10,26 @@ class RestaurantModel {
     required this.name,
     required this.description,
     required this.imageUrl,
-    required this.rating,
+    this.rating = 4.0, // Default rating
   });
+
+  factory RestaurantModel.fromJson(Map<String, dynamic> json) {
+    return RestaurantModel(
+      id: json['id'].toString(),
+      name: json['nome'] ?? '',
+      description: json['descricao'] ?? '',
+      imageUrl: json['imagem'] ?? '',
+      rating: (json['rating'] as num?)?.toDouble() ?? 4.0,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'nome': name,
+      'descricao': description,
+      'imagem': imageUrl,
+      'rating': rating,
+    };
+  }
 }
