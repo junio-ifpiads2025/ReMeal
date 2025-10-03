@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'about_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../models/restaurant_model.dart';
@@ -44,6 +45,35 @@ class _RestaurantsPagesState extends State<RestaurantsPages> {
       appBar: AppBar(
         title: Center(child: const Text('ReMeals', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),)),
         backgroundColor: Colors.transparent,
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(color: Colors.blue),
+              child: Text(
+                'ReMeal - Menu',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.info),
+              title: const Text('About'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const AboutPage()),
+                );
+              },
+            ),
+          ],
+        ),
       ),
       body: isLoading
           ? const Center(
