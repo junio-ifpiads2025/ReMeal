@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../models/restaurant_model.dart';
 import '../widgets/restaurant_card.dart';
+import 'package:remeal/pages/restaurant_details_page.dart';
 
 class RestaurantsPages extends StatefulWidget {
   const RestaurantsPages({super.key});
@@ -37,6 +38,13 @@ class _RestaurantsPagesState extends State<RestaurantsPages> {
       });
       // Handle error
     }
+  }
+
+  void _navigateToDetails(RestaurantModel restaurant) {
+    Navigator.of(context).pushNamed(
+      RestaurantDetailsPage.routeName,
+      arguments: restaurant,
+    );
   }
 
   @override
@@ -93,7 +101,7 @@ class _RestaurantsPagesState extends State<RestaurantsPages> {
                     return RestaurantCard(
                         restaurant: restaurants[index],
                         //Implementar Navegação aqui
-                        onTap: () => {},
+                        onTap: () => _navigateToDetails(restaurants[index]),
                       );
                   },
                 ),
