@@ -2,6 +2,7 @@
     {
         "id": 1,
         "nome": "Cabana no Rio",
+        "endereco": "Av. Nações Unidas, 168 - Nossa Sra. do Carmo, Parnaíba - PI",
         "descricao": "Restaurante de culinária regional e pratos clássicos",
         "imagem": "https://raw.githubusercontent.com/junio-ifpiads2025/ReMeal/refs/heads/main/images/Cabana_no_Rio.png",
         "rating": 4.2
@@ -9,6 +10,7 @@
     {
         "id": 2,
         "nome": "Don Ladino",
+        "endereco": "R. Padre Raimundo José Viêira, 378 - Nossa Sra. de Fátima, Parnaíba - PI",
         "descricao": "Gastronomia local, com diversas opções de pratos com frutos do mar, peixes e outras delicias da região. ",
         "imagem": "https://raw.githubusercontent.com/junio-ifpiads2025/ReMeal/refs/heads/main/images/DonLadino.png",
         "rating": 5.0
@@ -16,6 +18,7 @@
     {
         "id": 3,
         "nome": "Mangata",
+        "endereco": "Av. São Sebastião, 3900 - Frei Higino, Parnaíba - PI",
         "descricao": "Restaurante com ambiência Elegante e Moderna",
         "imagem": "https://raw.githubusercontent.com/junio-ifpiads2025/ReMeal/refs/heads/main/images/Mangata.png",
         "rating": 4.1
@@ -23,6 +26,7 @@
     {
         "id": 4,
         "nome": "Pollito Latino",
+        "endereco": "Ideal Center I - R. Borges Machado, 965 - Sala 5 - Frei Higino, Parnaíba - PI",
         "descricao": "Restaurante de culinária latino-americana, com pratos típicos de colombianos",
         "imagem": "https://raw.githubusercontent.com/junio-ifpiads2025/ReMeal/refs/heads/main/images/PollitoLatino.png",
         "rating": 4.3
@@ -30,6 +34,7 @@
     {
         "id": 5,
         "nome": "Salt",
+        "endereco": "Av. Leonardo de Carvalho Castelo Branco, 3774 - Reis Veloso, Parnaíba - PI,",
         "descricao": "Cerveja gelada, pratos, petiscos e drinks especiais.",
         "imagem": "https://raw.githubusercontent.com/junio-ifpiads2025/ReMeal/refs/heads/main/images/Salt.png",
         "rating": 3.7
@@ -37,6 +42,7 @@
     {
         "id": 6,
         "nome": "Vino",
+        "endereco": "Rua Santos Dumont, 159 - Fátima, Parnaíba - PI",
         "descricao": "Restaurante e Bar de Vinhos para todos os momentos",
         "imagem": "https://raw.githubusercontent.com/junio-ifpiads2025/ReMeal/refs/heads/main/images/Vino.png",
         "rating": 4.7
@@ -44,6 +50,7 @@
     {
         "id": 7,
         "nome": "Terraço Happy Hour",
+        "endereco": "Av. Leonardo De Carvalho Castelo Branco, 3010 - São Benedito, Parnaíba - PI",
         "descricao": "O Melhor happy Hour da cidade de Parnaíba.",
         "imagem": "https://raw.githubusercontent.com/junio-ifpiads2025/ReMeal/refs/heads/main/images/terraco_happy_hour.png",
         "rating": 3.0
