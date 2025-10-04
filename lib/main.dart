@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:remeal/navigation/bottom_navigation.dart';
+import 'package:remeal/pages/restaurant_details_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,6 +18,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       home:  BottomNavigation(),
+      routes: {
+        RestaurantDetailsPage.routeName: (ctx) => RestaurantDetailsPage(),
+      },
     );
   }
 }
