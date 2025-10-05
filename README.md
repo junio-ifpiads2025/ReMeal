@@ -153,17 +153,6 @@ flutter test
   </table>
 </div>
 
-## 🎯 Roadmap
-
-- [ ] Sistema completo de avaliações
-- [ ] Filtros por categoria de restaurante
-- [ ] Sistema de favoritos
-- [ ] Mapa interativo com localização dos restaurantes
-- [ ] Notificações push
-- [ ] Login e autenticação de usuários
-- [ ] Integração com APIs de mapas
-- [ ] Sistema de recompensas e gamificação
-
 ## 📝 Licença
 
 Este projeto foi desenvolvido como parte de um trabalho acadêmico do IFPI - Campus Parnaíba.
