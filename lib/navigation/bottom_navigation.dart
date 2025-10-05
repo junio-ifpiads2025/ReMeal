@@ -34,8 +34,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
         onTap: _onItemTapped, // ação ao clicar
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Home",
+            icon: Icon(Icons.restaurant),
+            label: "Restaurantes",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
