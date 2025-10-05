@@ -25,8 +25,14 @@ O **ReMeal** é um aplicativo móvel desenvolvido em Flutter que conecta amantes
 
 ## 📱 Screenshots
 
-*Em breve: Capturas de tela das principais funcionalidades*
-
+<p float="left">
+  <img src="https://github.com/junio-ifpiads2025/ReMeal/blob/main/images/1.jpeg" width="400" />
+  <img src="https://github.com/junio-ifpiads2025/ReMeal/blob/main/images/2.jpeg" width="400" />
+</p>
+<p float="left">
+  <img src="https://github.com/junio-ifpiads2025/ReMeal/blob/main/images/3.jpeg" width="400" />
+  <img src="https://github.com/junio-ifpiads2025/ReMeal/blob/main/images/4.jpeg" width="400" />
+</p>
 ## 🏗️ Arquitetura do Projeto
 
 ```
