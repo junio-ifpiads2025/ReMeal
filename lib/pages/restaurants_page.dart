@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:remeal/widgets/drawer.dart';
+
 import 'about_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -54,22 +56,8 @@ class _RestaurantsPagesState extends State<RestaurantsPages> {
         title: Center(child: const Text('ReMeals', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),)),
         backgroundColor: Colors.transparent,
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: Text(
-                'ReMeal - Menu',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            ListTile(
+      drawer: DrawerWidget(drawerItems: [
+         ListTile(
               leading: const Icon(Icons.info),
               title: const Text('About'),
               onTap: () {
@@ -79,10 +67,8 @@ class _RestaurantsPagesState extends State<RestaurantsPages> {
                   MaterialPageRoute(builder: (context) => const AboutPage()),
                 );
               },
-            ),
-          ],
-        ),
-      ),
+            )
+      ]),
       body: isLoading
           ? const Center(
               child: CircularProgressIndicator(),
