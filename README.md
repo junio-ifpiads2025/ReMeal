@@ -83,28 +83,11 @@ lib/
    flutter run
    ```
 
-### Comandos Úteis
-
-```bash
-# Verificar se o ambiente está configurado
-flutter doctor
-
-# Executar em modo release
-flutter run --release
-
-# Gerar APK para Android
-flutter build apk
-
-# Executar testes
-flutter test
-```
 
 ## 🛠️ Tecnologias Utilizadas
 
 - **[Flutter](https://flutter.dev/)** - Framework de desenvolvimento multiplataforma
 - **[Dart](https://dart.dev/)** - Linguagem de programação
-- **Material Design** - Sistema de design da Google
-- **JSON** - Armazenamento local de dados mockados
 
 ## 📊 Funcionalidades Detalhadas
 
