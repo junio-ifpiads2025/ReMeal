@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:remeal/navigation/bottom_navigation.dart';
-import 'package:remeal/pages/restaurant_details_page.dart';
+import 'package:remeal/navigation/router_Generator.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,10 +16,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home:  BottomNavigation(),
-      routes: {
-        RestaurantDetailsPage.routeName: (ctx) => RestaurantDetailsPage(),
-      },
+      onGenerateRoute: AppRouter.generateRoute,
+      initialRoute: "/",
     );
   }
 }

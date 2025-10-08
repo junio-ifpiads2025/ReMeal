@@ -1,12 +1,10 @@
 import 'dart:convert';
 import 'package:remeal/widgets/drawer.dart';
-
 import 'about_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../models/restaurant_model.dart';
 import '../widgets/restaurant_card.dart';
-import 'package:remeal/pages/restaurant_details_page.dart';
 
 class RestaurantsPages extends StatefulWidget {
   const RestaurantsPages({super.key});
@@ -44,7 +42,7 @@ class _RestaurantsPagesState extends State<RestaurantsPages> {
 
   void _navigateToDetails(RestaurantModel restaurant) {
     Navigator.of(context).pushNamed(
-      RestaurantDetailsPage.routeName,
+      "/restaurant-details",
       arguments: restaurant,
     );
   }
@@ -53,7 +51,7 @@ class _RestaurantsPagesState extends State<RestaurantsPages> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: const Text('ReMeals', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),)),
+        title: const Text('ReMeals', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
         backgroundColor: Colors.transparent,
       ),
       drawer: DrawerWidget(drawerItems: [
