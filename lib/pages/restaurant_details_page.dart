@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import '../models/restaurant_model.dart';
 
 class RestaurantDetailsPage extends StatelessWidget {
-  const RestaurantDetailsPage({super.key});
-
-  static const routeName = '/restaurant-details';
+  const RestaurantDetailsPage({super.key, required this.restaurant});
+  final RestaurantModel restaurant;
 
   @override
   Widget build(BuildContext context) {
-    final restaurant = ModalRoute.of(context)!.settings.arguments as RestaurantModel;
 
     return Scaffold(
       backgroundColor: Colors.grey[100],
