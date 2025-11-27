@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:remeal/widgets/drawer.dart';
+import 'package:remeal/pages/profile_settings.dart';
 import 'about_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -55,17 +56,28 @@ class _RestaurantsPagesState extends State<RestaurantsPages> {
         backgroundColor: Colors.transparent,
       ),
       drawer: DrawerWidget(drawerItems: [
-         ListTile(
-              leading: const Icon(Icons.info),
-              title: const Text('About'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const AboutPage()),
-                );
-              },
-            )
+        ListTile(
+          leading: const Icon(Icons.info),
+          title: const Text('About'),
+          onTap: () {
+            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const AboutPage()),
+            );
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.settings),
+          title: const Text('Settings'),
+          onTap: () {
+            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const SettingsPage()),
+            );
+          },
+        ),
       ]),
       body: isLoading
           ? const Center(
