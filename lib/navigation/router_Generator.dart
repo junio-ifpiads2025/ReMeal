@@ -3,6 +3,7 @@ import 'package:remeal/models/restaurant_model.dart';
 import 'package:remeal/navigation/bottom_navigation.dart';
 import 'package:remeal/pages/restaurant_details_page.dart';
 import 'package:remeal/pages/restaurants_page.dart';
+import 'package:remeal/pages/profile_settings.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -15,6 +16,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => RestaurantDetailsPage(
           restaurant: settings.arguments as RestaurantModel,
         ));
+      case '/settings':
+      return MaterialPageRoute(builder: (_) => SettingsPage());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
