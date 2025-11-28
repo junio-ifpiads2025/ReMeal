@@ -52,8 +52,9 @@ class _RestaurantsPagesState extends ConsumerState<RestaurantsPages> {
   }
 
   void _logout() {
+    Navigator.pop(context); // Fecha o drawer
     ref.read(authControllerProvider.notifier).logout();
-    Navigator.of(context).pushNamed('/login');
+    // O AuthChecker vai redirecionar automaticamente para o Login
   }
 
   List<Widget> _drawerItems() {

@@ -14,7 +14,7 @@ class _LoginState extends ConsumerState<Login> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
-  final bool _isLoading = false;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -25,21 +25,40 @@ class _LoginState extends ConsumerState<Login> {
 
   Future<void> _handleLogin() async {
     if (_formKey.currentState!.validate()) {
-      // Chama o método real do Controller
-      await ref.read(authControllerProvider.notifier).login(
-        _emailController.text,
-        _passwordController.text,
-      );
-      
-      // OBS: Não precisa de Navigator.push aqui! 
-      // O AuthChecker vai perceber a mudança de estado e trocar a tela sozinho.
-      
-      // Se quiser tratar erros, pode verificar o estado depois:
-      final state = ref.read(authControllerProvider);
-      if (state.hasError && mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(state.error.toString())),
-        );
+      setState(() => _isLoading = true);
+
+      try {
+        await ref
+            .read(authControllerProvider.notifier)
+            .login(_emailController.text, _passwordController.text);
+
+        // Verifica se houve erro após o login
+        final state = ref.read(authControllerProvider);
+        if (state.hasError && mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                state.error.toString().replaceAll('Exception: ', ''),
+              ),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+        // OBS: Não precisa de Navigator.push aqui!
+        // O AuthChecker vai perceber a mudança de estado e trocar a tela sozinho.
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(e.toString().replaceAll('Exception: ', '')),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      } finally {
+        if (mounted) {
+          setState(() => _isLoading = false);
+        }
       }
     }
   }
@@ -56,7 +75,7 @@ class _LoginState extends ConsumerState<Login> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 60),
-                
+
                 // Logo e título
                 Icon(
                   Icons.restaurant_menu,
@@ -77,14 +96,11 @@ class _LoginState extends ConsumerState<Login> {
                 Text(
                   'Descubra os melhores restaurantes',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey[600],
-                  ),
+                  style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                 ),
-                
+
                 const SizedBox(height: 48),
-                
+
                 // Campo de email
                 TextFormField(
                   controller: _emailController,
@@ -109,9 +125,9 @@ class _LoginState extends ConsumerState<Login> {
                     return null;
                   },
                 ),
-                
+
                 const SizedBox(height: 16),
-                
+
                 // Campo de senha
                 TextFormField(
                   controller: _passwordController,
@@ -122,8 +138,8 @@ class _LoginState extends ConsumerState<Login> {
                     prefixIcon: const Icon(Icons.lock_outlined),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscurePassword 
-                            ? Icons.visibility_outlined 
+                        _obscurePassword
+                            ? Icons.visibility_outlined
                             : Icons.visibility_off_outlined,
                       ),
                       onPressed: () {
@@ -146,9 +162,9 @@ class _LoginState extends ConsumerState<Login> {
                     return null;
                   },
                 ),
-                
+
                 const SizedBox(height: 30),
-                
+
                 SizedBox(
                   height: 52,
                   child: ElevatedButton(
@@ -179,9 +195,9 @@ class _LoginState extends ConsumerState<Login> {
                           ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 32),
-                
+
                 // Divisor
                 Row(
                   children: [
@@ -196,9 +212,9 @@ class _LoginState extends ConsumerState<Login> {
                     Expanded(child: Divider(color: Colors.grey[300])),
                   ],
                 ),
-                
+
                 const SizedBox(height: 32),
-                
+
                 // Link para registro
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -221,7 +237,7 @@ class _LoginState extends ConsumerState<Login> {
                     ),
                   ],
                 ),
-                
+
                 const SizedBox(height: 24),
               ],
             ),

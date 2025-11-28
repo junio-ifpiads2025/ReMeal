@@ -28,27 +28,54 @@ class _RegisterState extends ConsumerState<Register> {
     super.dispose();
   }
 
-  void _handleRegister() async {
+  Future<void> _handleRegister() async {
     if (_formKey.currentState!.validate()) {
       setState(() => _isLoading = true);
 
-      
-        await ref.read(authControllerProvider.notifier).register(
-        _nameController.text,
-        _emailController.text,
-        _passwordController.text,
-      );
-        
-        // Mostra mensagem de sucesso e volta para login
-        if (mounted) {
+      try {
+        await ref
+            .read(authControllerProvider.notifier)
+            .register(
+              _nameController.text,
+              _emailController.text,
+              _passwordController.text,
+            );
+
+        // Verifica se houve erro após o registro
+        final state = ref.read(authControllerProvider);
+        if (state.hasError && mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                state.error.toString().replaceAll('Exception: ', ''),
+              ),
+              backgroundColor: Colors.red,
+            ),
+          );
+        } else if (mounted) {
+          // Sucesso - mostra mensagem e volta para login
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Conta criada com sucesso!'),
               backgroundColor: Colors.green,
             ),
           );
-          Navigator.pop(context);
+          // OBS: O AuthChecker vai redirecionar automaticamente se o usuário foi logado
         }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(e.toString().replaceAll('Exception: ', '')),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      } finally {
+        if (mounted) {
+          setState(() => _isLoading = false);
+        }
+      }
     }
   }
 
@@ -91,10 +118,7 @@ class _RegisterState extends ConsumerState<Register> {
                 const SizedBox(height: 8),
                 Text(
                   'Preencha os dados para se cadastrar',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey[600],
-                  ),
+                  style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                 ),
 
                 const SizedBox(height: 32),
@@ -206,7 +230,10 @@ class _RegisterState extends ConsumerState<Register> {
                             : Icons.visibility_off_outlined,
                       ),
                       onPressed: () {
-                        setState(() => _obscureConfirmPassword = !_obscureConfirmPassword);
+                        setState(
+                          () => _obscureConfirmPassword =
+                              !_obscureConfirmPassword,
+                        );
                       },
                     ),
                     border: OutlineInputBorder(
