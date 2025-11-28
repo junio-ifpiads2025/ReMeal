@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:remeal/navigation/bottom_navigation.dart';
+import 'package:remeal/navigation/auth_checker.dart';
 import 'package:remeal/navigation/router_Generator.dart';
-import 'package:remeal/pages/auth/login.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 const isLoggedIn = false;
@@ -21,7 +23,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       onGenerateRoute: AppRouter.generateRoute,
-      home: isLoggedIn ? const BottomNavigation() : const Login(),
+      home: AuthChecker(),
     );
   }
 }

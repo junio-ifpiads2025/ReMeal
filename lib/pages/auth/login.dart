@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:remeal/controller/auth_provider.dart';
 
-class Login extends StatefulWidget {
+class Login extends ConsumerStatefulWidget {
   const Login({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  ConsumerState<Login> createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginState extends ConsumerState<Login> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
-  bool _isLoading = false;
+  final bool _isLoading = false;
 
   @override
   void dispose() {
@@ -21,16 +23,24 @@ class _LoginState extends State<Login> {
     super.dispose();
   }
 
-  void _handleLogin() {
+  Future<void> _handleLogin() async {
     if (_formKey.currentState!.validate()) {
-      setState(() => _isLoading = true);
+      // Chama o método real do Controller
+      await ref.read(authControllerProvider.notifier).login(
+        _emailController.text,
+        _passwordController.text,
+      );
       
-      // Simula um delay de login
-      Future.delayed(const Duration(seconds: 1), () {
-        setState(() => _isLoading = false);
-        // TODO: Implementar lógica real de autenticação
-        Navigator.pushReplacementNamed(context, '/');
-      });
+      // OBS: Não precisa de Navigator.push aqui! 
+      // O AuthChecker vai perceber a mudança de estado e trocar a tela sozinho.
+      
+      // Se quiser tratar erros, pode verificar o estado depois:
+      final state = ref.read(authControllerProvider);
+      if (state.hasError && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(state.error.toString())),
+        );
+      }
     }
   }
 
