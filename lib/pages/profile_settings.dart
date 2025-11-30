@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:remeal/utils/preferences.dart';
 import 'package:remeal/utils/theme_notifier.dart';
 
-class SettingsPage extends StatefulWidget {
+class SettingsPage extends ConsumerStatefulWidget {
   const SettingsPage({super.key});
 
   @override
-  State<SettingsPage> createState() => _SettingsPageState();
+  ConsumerState<SettingsPage> createState() => _SettingsPageState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
+class _SettingsPageState extends ConsumerState<SettingsPage> {
   bool _isDarkMode = false;
   String? _selectedCategory;
   final List<String> _categories = ['Bebidas', 'Doces', 'Salgados', 'Massas'];
@@ -35,7 +35,7 @@ class _SettingsPageState extends State<SettingsPage> {
       _isDarkMode = value;
     });
     await Preferences.setDarkMode(value);
-    Provider.of<ThemeNotifier>(context, listen: false).setDark(value);
+    ref.read(themeNotifierProvider.notifier).setDark(value);
   }
 
   void _onCategoryChanged(String? value) async {
@@ -64,7 +64,7 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             const SizedBox(height: 24),
             DropdownButtonFormField<String>(
-              value: _selectedCategory,
+              initialValue: _selectedCategory,
               items: _categories
                   .map((cat) => DropdownMenuItem(
                         value: cat,
