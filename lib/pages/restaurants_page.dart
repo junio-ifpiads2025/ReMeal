@@ -89,9 +89,12 @@ class _RestaurantsPagesState extends ConsumerState<RestaurantsPages> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'ReMeals',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.primary, 
+            fontWeight: FontWeight.bold
+          ),
         ),
         backgroundColor: Colors.transparent,
       ),
