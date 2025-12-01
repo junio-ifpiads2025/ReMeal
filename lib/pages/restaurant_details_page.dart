@@ -9,18 +9,18 @@ class RestaurantDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(Icons.arrow_back, color: Theme.of(context).iconTheme.color),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text(
+        title: Text(
           'Detalhes',
           style: TextStyle(
-            color: Colors.black,
+            color: Theme.of(context).appBarTheme.titleTextStyle?.color,
             fontSize: 18,
             fontWeight: FontWeight.w600,
           ),
@@ -76,7 +76,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                         const SizedBox(height: 4),
                         Text(
                           restaurant.address,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 14,
                           ),
@@ -89,7 +89,7 @@ class RestaurantDetailsPage extends StatelessWidget {
             ),
 
             Container(
-              color: Colors.white,
+              color: Theme.of(context).cardColor,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -122,7 +122,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                         Text(
                           '${restaurant.rating.toStringAsFixed(1)} (234 reviews)',
                           style: TextStyle(
-                            color: Colors.grey[600],
+                            color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.6),
                             fontSize: 14,
                           ),
                         ),
@@ -134,9 +134,10 @@ class RestaurantDetailsPage extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
                       'Sobre ${restaurant.name}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
+                        color: Theme.of(context).textTheme.headlineMedium?.color,
                       ),
                     ),
                   ),
@@ -147,7 +148,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                       restaurant.description,
                       style: TextStyle(
                         fontSize: 18,
-                        color: Colors.grey[700],
+                        color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.8),
                         height: 1.5,
                       ),
                       textAlign: TextAlign.justify,
@@ -167,10 +168,10 @@ class RestaurantDetailsPage extends StatelessWidget {
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
+              color: Theme.of(context).shadowColor.withOpacity(0.05),
               blurRadius: 10,
               offset: const Offset(0, -2),
             ),
@@ -190,8 +191,8 @@ class RestaurantDetailsPage extends StatelessWidget {
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                foregroundColor: Colors.white,
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
