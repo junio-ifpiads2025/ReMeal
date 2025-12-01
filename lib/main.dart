@@ -2,20 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:remeal/navigation/auth_checker.dart';
 import 'package:remeal/navigation/router_Generator.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:remeal/utils/theme_notifier.dart';
-import 'package:remeal/utils/preferences.dart';
+import 'package:remeal/providers/theme_provider.dart';
 
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final isDark = await Preferences.getDarkMode();
   runApp(
-    ProviderScope(
-      overrides: [
-        themeNotifierProvider.overrideWith(
-          (ref) => ThemeNotifier(isDark ? ThemeMode.dark : ThemeMode.light),
-        ),
-      ],
-      child: const MyApp(),
+    const ProviderScope(
+      child: MyApp(),
     ),
   );
 }
@@ -27,7 +20,8 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeMode = ref.watch(themeNotifierProvider);
+    final isDark = ref.watch(themeProvider);
+    
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -44,9 +38,9 @@ class MyApp extends ConsumerWidget {
         ),
         brightness: Brightness.dark,
       ),
-      themeMode: themeMode,
+      themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
       onGenerateRoute: AppRouter.generateRoute,
-      home: AuthChecker(),
+      home: const AuthChecker(),
     );
   }
 }
