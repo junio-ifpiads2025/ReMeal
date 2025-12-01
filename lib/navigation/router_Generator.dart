@@ -6,6 +6,7 @@ import 'package:remeal/pages/auth/login.dart';
 import 'package:remeal/pages/auth/register.dart';
 import 'package:remeal/pages/restaurant_details_page.dart';
 import 'package:remeal/pages/restaurants_page.dart';
+import 'package:remeal/pages/profile_settings.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -26,6 +27,10 @@ class AppRouter {
         );
       case '/about':
         return MaterialPageRoute(builder: (_) => AboutPage());
+      case '/settings':
+        return MaterialPageRoute(
+          builder: (_) => const SettingsPage(),
+        );
       default:
         return MaterialPageRoute(
           builder: (_) =>
