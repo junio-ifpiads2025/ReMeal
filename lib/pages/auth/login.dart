@@ -96,7 +96,10 @@ class _LoginState extends ConsumerState<Login> {
                 Text(
                   'Descubra os melhores restaurantes',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                  style: TextStyle(
+                    fontSize: 16, 
+                    color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7)
+                  ),
                 ),
 
                 const SizedBox(height: 48),
@@ -113,7 +116,7 @@ class _LoginState extends ConsumerState<Login> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     filled: true,
-                    fillColor: Colors.grey[50],
+                    fillColor: Theme.of(context).inputDecorationTheme.fillColor,
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -150,7 +153,7 @@ class _LoginState extends ConsumerState<Login> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     filled: true,
-                    fillColor: Colors.grey[50],
+                    fillColor: Theme.of(context).inputDecorationTheme.fillColor,
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -171,7 +174,7 @@ class _LoginState extends ConsumerState<Login> {
                     onPressed: _isLoading ? null : _handleLogin,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Theme.of(context).colorScheme.primary,
-                      foregroundColor: Colors.white,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -182,7 +185,6 @@ class _LoginState extends ConsumerState<Login> {
                             height: 24,
                             width: 24,
                             child: CircularProgressIndicator(
-                              color: Colors.white,
                               strokeWidth: 2,
                             ),
                           )
@@ -201,15 +203,15 @@ class _LoginState extends ConsumerState<Login> {
                 // Divisor
                 Row(
                   children: [
-                    Expanded(child: Divider(color: Colors.grey[300])),
+                    Expanded(child: Divider(color: Theme.of(context).dividerColor)),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Text(
                         'ou',
-                        style: TextStyle(color: Colors.grey[500]),
+                        style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.5)),
                       ),
                     ),
-                    Expanded(child: Divider(color: Colors.grey[300])),
+                    Expanded(child: Divider(color: Theme.of(context).dividerColor)),
                   ],
                 ),
 
@@ -221,7 +223,7 @@ class _LoginState extends ConsumerState<Login> {
                   children: [
                     Text(
                       'Não tem uma conta? ',
-                      style: TextStyle(color: Colors.grey[600]),
+                      style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7)),
                     ),
                     TextButton(
                       onPressed: () {
