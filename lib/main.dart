@@ -25,16 +25,20 @@ class MyApp extends ConsumerWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.deepPurple,
-          brightness: Brightness.light,
+        colorScheme: const ColorScheme.light(
+          primary: Color(0xFF6750A4),
+          onPrimary: Color(0xFFFFFFFF),
+          primaryContainer: Color(0xFFEADDFF),
+          onPrimaryContainer: Color(0xFF4F378B),
         ),
         brightness: Brightness.light,
       ),
       darkTheme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.deepPurple,
-          brightness: Brightness.dark,
+        colorScheme: const ColorScheme.dark(
+          primary: Color(0xFFD0BCFF),
+          onPrimary: Color(0xFF381E72),
+          primaryContainer: Color(0xFF4F378B),
+          onPrimaryContainer: Color(0xFFEADDFF),
         ),
         brightness: Brightness.dark,
       ),
