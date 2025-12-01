@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'about_page.dart';
+import 'package:remeal/widgets/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../models/user_review.dart';
@@ -49,42 +50,42 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     }
   }
 
+  List<Widget> _drawerItems() {
+    return [
+      ListTile(
+        leading: const Icon(Icons.info),
+        title: const Text('About'),
+        onTap: () {
+          Navigator.pop(context);
+          Navigator.pushNamed(context, '/about');
+        },
+      ),
+      ListTile(
+        leading: const Icon(Icons.settings),
+        title: const Text('Configurações'),
+        onTap: () {
+          Navigator.pop(context);
+          Navigator.pushNamed(context, '/settings');
+        },
+      ),
+      ListTile(
+        leading: const Icon(Icons.logout),
+        title: const Text('Logout'),
+        onTap: () => _logout(),
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
+    final user = ref.watch(authControllerProvider).value;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("My Reviews"),
         centerTitle: true,
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: Text(
-                'ReMeal - Menu',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.info),
-              title: const Text('About'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const AboutPage()),
-                );
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: DrawerWidget(drawerItems: _drawerItems(), user: user),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : reviews.isEmpty
