@@ -99,7 +99,7 @@ class _RegisterState extends ConsumerState<Register> {
                     onPressed: () => Navigator.pop(context),
                     icon: const Icon(Icons.arrow_back),
                     style: IconButton.styleFrom(
-                      backgroundColor: Colors.grey[100],
+                      backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
                     ),
                   ),
                 ),
@@ -118,7 +118,10 @@ class _RegisterState extends ConsumerState<Register> {
                 const SizedBox(height: 8),
                 Text(
                   'Preencha os dados para se cadastrar',
-                  style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                  style: TextStyle(
+                    fontSize: 16, 
+                    color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7)
+                  ),
                 ),
 
                 const SizedBox(height: 32),
@@ -136,7 +139,7 @@ class _RegisterState extends ConsumerState<Register> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     filled: true,
-                    fillColor: Colors.grey[50],
+                    fillColor: Theme.of(context).inputDecorationTheme.fillColor,
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -163,7 +166,7 @@ class _RegisterState extends ConsumerState<Register> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     filled: true,
-                    fillColor: Colors.grey[50],
+                    fillColor: Theme.of(context).inputDecorationTheme.fillColor,
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -200,7 +203,7 @@ class _RegisterState extends ConsumerState<Register> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     filled: true,
-                    fillColor: Colors.grey[50],
+                    fillColor: Theme.of(context).inputDecorationTheme.fillColor,
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -240,7 +243,7 @@ class _RegisterState extends ConsumerState<Register> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     filled: true,
-                    fillColor: Colors.grey[50],
+                    fillColor: Theme.of(context).inputDecorationTheme.fillColor,
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -262,7 +265,7 @@ class _RegisterState extends ConsumerState<Register> {
                     onPressed: _isLoading ? null : _handleRegister,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Theme.of(context).colorScheme.primary,
-                      foregroundColor: Colors.white,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -273,7 +276,6 @@ class _RegisterState extends ConsumerState<Register> {
                             height: 24,
                             width: 24,
                             child: CircularProgressIndicator(
-                              color: Colors.white,
                               strokeWidth: 2,
                             ),
                           )
@@ -295,7 +297,7 @@ class _RegisterState extends ConsumerState<Register> {
                   children: [
                     Text(
                       'Já tem uma conta? ',
-                      style: TextStyle(color: Colors.grey[600]),
+                      style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7)),
                     ),
                     TextButton(
                       onPressed: () => Navigator.pop(context),
