@@ -3,17 +3,25 @@ import 'about_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../models/user_review.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:remeal/controller/auth_provider.dart';
 
-class ProfilePage extends StatefulWidget {
+class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  ConsumerState<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageState extends ConsumerState<ProfilePage> {
   List<UserReview> reviews = [];
   bool isLoading = true;
+
+  void _logout() {
+    Navigator.pop(context); // Fecha o drawer
+    ref.read(authControllerProvider.notifier).logout();
+    // O AuthChecker vai redirecionar automaticamente para o Login
+  }
 
   @override
   void initState() {
