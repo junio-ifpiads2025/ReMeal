@@ -81,10 +81,10 @@ class RestaurantCard extends StatelessWidget {
                   // Restaurant name
                   Text(
                     restaurant.name,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                      color: Theme.of(context).textTheme.titleLarge?.color,
                     ),
                   ),
                   
@@ -98,7 +98,7 @@ class RestaurantCard extends StatelessWidget {
                           restaurant.description,
                           style: TextStyle(
                             fontSize: 14,
-                            color: Colors.grey[600],
+                            color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7),
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -110,9 +110,10 @@ class RestaurantCard extends StatelessWidget {
                         children: [
                           Text(
                             restaurant.rating.toStringAsFixed(1),
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
+                              color: Theme.of(context).textTheme.bodyMedium?.color,
                             ),
                           ),
                           const SizedBox(width: 4),
