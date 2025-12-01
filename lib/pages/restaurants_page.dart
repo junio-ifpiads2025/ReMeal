@@ -68,6 +68,14 @@ class _RestaurantsPagesState extends ConsumerState<RestaurantsPages> {
         },
       ),
       ListTile(
+        leading: const Icon(Icons.settings),
+        title: const Text('Configurações'),
+        onTap: () {
+          Navigator.pop(context);
+          Navigator.pushNamed(context, '/settings');
+        },
+      ),
+      ListTile(
         leading: const Icon(Icons.logout),
         title: const Text('Logout'),
         onTap: () => _logout(),
