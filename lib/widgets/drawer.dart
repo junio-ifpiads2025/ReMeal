@@ -25,23 +25,29 @@ class DrawerWidget extends StatelessWidget {
             header!
           else
             UserAccountsDrawerHeader(
-              decoration: BoxDecoration(color: Theme.of(context).primaryColor),
+              decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary),
               accountName: Text(
                 user?.name ?? 'Visitante',
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
+                  color: Theme.of(context).colorScheme.onPrimary,
                 ),
               ),
-              accountEmail: Text(user?.email ?? ''),
+              accountEmail: Text(
+                user?.email ?? '',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.8),
+                ),
+              ),
               currentAccountPicture: CircleAvatar(
-                backgroundColor: Colors.white,
+                backgroundColor: Theme.of(context).colorScheme.onPrimary,
                 child: Text(
                   _getInitials(user?.name),
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).primaryColor,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
               ),
