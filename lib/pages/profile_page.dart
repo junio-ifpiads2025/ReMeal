@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:remeal/widgets/drawer.dart';
+import 'package:remeal/pages/profile_settings.dart';
 import 'about_page.dart';
 import 'package:remeal/widgets/drawer.dart';
 import 'package:flutter/material.dart';
