@@ -2,20 +2,29 @@ import 'dart:convert';
 import 'package:remeal/widgets/drawer.dart';
 import 'package:remeal/pages/profile_settings.dart';
 import 'about_page.dart';
+import 'package:remeal/widgets/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../models/user_review.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:remeal/controller/auth_provider.dart';
 
-class ProfilePage extends StatefulWidget {
+class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  ConsumerState<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageState extends ConsumerState<ProfilePage> {
   List<UserReview> reviews = [];
   bool isLoading = true;
+
+  void _logout() {
+    Navigator.pop(context); // Fecha o drawer
+    ref.read(authControllerProvider.notifier).logout();
+    // O AuthChecker vai redirecionar automaticamente para o Login
+  }
 
   @override
   void initState() {
@@ -43,37 +52,42 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  List<Widget> _drawerItems() {
+    return [
+      ListTile(
+        leading: const Icon(Icons.info),
+        title: const Text('About'),
+        onTap: () {
+          Navigator.pop(context);
+          Navigator.pushNamed(context, '/about');
+        },
+      ),
+      ListTile(
+        leading: const Icon(Icons.settings),
+        title: const Text('Configurações'),
+        onTap: () {
+          Navigator.pop(context);
+          Navigator.pushNamed(context, '/settings');
+        },
+      ),
+      ListTile(
+        leading: const Icon(Icons.logout),
+        title: const Text('Logout'),
+        onTap: () => _logout(),
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
+    final user = ref.watch(authControllerProvider).value;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("My Reviews"),
         centerTitle: true,
       ),
-      drawer: DrawerWidget(drawerItems: [
-        ListTile(
-          leading: const Icon(Icons.info),
-          title: const Text('About'),
-          onTap: () {
-            Navigator.pop(context);
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const AboutPage()),
-            );
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.settings),
-          title: const Text('Settings'),
-          onTap: () {
-            Navigator.pop(context);
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const SettingsPage()),
-            );
-          },
-        ),
-      ]),
+      drawer: DrawerWidget(drawerItems: _drawerItems(), user: user),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : reviews.isEmpty
