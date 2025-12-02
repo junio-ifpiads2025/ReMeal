@@ -11,7 +11,7 @@ class SettingsPage extends ConsumerStatefulWidget {
 }
 
 class _SettingsPageState extends ConsumerState<SettingsPage> {
-  final List<String> _categories = ['Bebidas', 'Doces', 'Salgados', 'Massas'];
+  final List<String> _categories = ['Regional', 'Frutos do Mar', 'Contemporânea', 'Latina', 'Bar'];
 
   @override
   Widget build(BuildContext context) {
@@ -39,20 +39,24 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             ),
             const SizedBox(height: 24),
             DropdownButtonFormField<String>(
-              value: selectedCategory ?? _categories.first,
-              items: _categories
-                  .map((cat) => DropdownMenuItem(
-                        value: cat,
-                        child: Text(cat),
-                      ))
-                  .toList(),
+              value: selectedCategory,
+              items: [
+                const DropdownMenuItem(
+                  value: null,
+                  child: Text('Todas as categorias'),
+                ),
+                ..._categories
+                    .map((cat) => DropdownMenuItem(
+                          value: cat,
+                          child: Text(cat),
+                        ))
+                    .toList(),
+              ],
               onChanged: (value) {
-                if (value != null) {
-                  ref.read(categoryProvider.notifier).setCategory(value);
-                }
+                ref.read(categoryProvider.notifier).setCategory(value);
               },
               decoration: const InputDecoration(
-                labelText: 'Última categoria',
+                labelText: 'Categoria preferida',
                 border: OutlineInputBorder(),
               ),
             ),
