@@ -119,8 +119,6 @@ class _RestaurantsPagesState extends ConsumerState<RestaurantsPages>
     final query = _searchController.text.toLowerCase();
     final selectedCategory = ref.read(categoryProvider);
     
-    print('🔍 Filtrando: categoria="$selectedCategory", busca="$query"');
-
     setState(() {
       filteredRestaurants = restaurants.where((restaurant) {
         final matchesSearch = query.isEmpty ||
@@ -131,13 +129,10 @@ class _RestaurantsPagesState extends ConsumerState<RestaurantsPages>
             selectedCategory.isEmpty ||
             restaurant.category.trim() == selectedCategory.trim();
 
-        print('📍 ${restaurant.name} (${restaurant.category}): busca=$matchesSearch, categoria=$matchesCategory');
-        
         return matchesSearch && matchesCategory;
       }).toList();
     });
     
-    print('✅ Resultado: ${filteredRestaurants.length} restaurantes encontrados');
   }
   
   void _toggleSearch() {
