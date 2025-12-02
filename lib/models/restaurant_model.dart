@@ -5,6 +5,7 @@ class RestaurantModel {
   final String description;
   final String imageUrl;
   final double rating;
+  final String category;
 
   RestaurantModel({
     required this.id,
@@ -12,6 +13,7 @@ class RestaurantModel {
     required this.address,
     required this.description,
     required this.imageUrl,
+    required this.category,
     this.rating = 4.0, // Default rating
   });
 
@@ -23,6 +25,7 @@ class RestaurantModel {
       description: json['descricao'] ?? '',
       imageUrl: json['imagem'] ?? '',
       rating: (json['rating'] as num?)?.toDouble() ?? 4.0,
+      category: json['categoria'] ?? 'Outros',
     );
   }
 
@@ -34,6 +37,7 @@ class RestaurantModel {
       'descricao': description,
       'imagem': imageUrl,
       'rating': rating,
+      'categoria': category,
     };
   }
 }
