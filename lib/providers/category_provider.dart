@@ -11,45 +11,24 @@ class CategoryNotifier extends Notifier<String?> {
   }
 
   void _loadCategory() async {
-    try {
-      final category = await Preferences.getLastCategory();
-      print('🔄 Categoria carregada das preferências: "$category"');
-      if (category != null && category.isNotEmpty) {
-        print('📱 Atualizando state para: "$category"');
-        // Usar Future.microtask para garantir que o state seja atualizado corretamente
+    final category = await Preferences.getLastCategory();
+    if (category != null && category.isNotEmpty) {
         Future.microtask(() => state = category);
       }
-    } catch (e) {
-      print('❌ Erro ao carregar categoria: $e');
-    }
   }
 
   Future<void> setCategory(String? category) async {
-    try {
-      print('🎯 Definindo categoria: "$category"');
-      // Atualiza o state imediatamente
-      state = category;
-      
-      if (category != null && category.isNotEmpty) {
+    state = category;
+    if (category != null && category.isNotEmpty) {
         await Preferences.setLastCategory(category);
-        print('💾 Categoria salva: "$category"');
       } else {
         await Preferences.setLastCategory('');
-        print('🗑️ Categoria limpa');
       }
-    } catch (e) {
-      print('❌ Erro ao definir categoria: $e');
-    }
   }
 
   Future<void> clearFilter() async {
-    try {
-      print('🧹 Limpando filtro de categoria');
-      state = null;
-      await Preferences.setLastCategory('');
-    } catch (e) {
-      print('❌ Erro ao limpar categoria: $e');
-    }
+    state = null;
+    await Preferences.setLastCategory('');
   }
 }
 
