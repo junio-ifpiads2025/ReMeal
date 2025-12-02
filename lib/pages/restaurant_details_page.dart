@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/restaurant_model.dart';
+import '../controller/favorite_controller.dart';
 
-class RestaurantDetailsPage extends StatelessWidget {
+class RestaurantDetailsPage extends ConsumerWidget {
   const RestaurantDetailsPage({super.key, required this.restaurant});
   final RestaurantModel restaurant;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final favoritesState = ref.watch(favoriteControllerProvider);
 
+    final favoriteNotifier = ref.watch(favoriteControllerProvider.notifier);
+    
+    final isFavorite = favoriteNotifier.isFavorite(int.parse(restaurant.id));
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
@@ -26,6 +32,21 @@ class RestaurantDetailsPage extends StatelessWidget {
           ),
         ),
         centerTitle: true,
+
+        actions: [
+          IconButton(
+            onPressed: () {
+              ref
+                  .read(favoriteControllerProvider.notifier)
+                  .toggleFavorite(int.parse(restaurant.id));
+            },
+            icon: Icon(
+              isFavorite ? Icons.favorite : Icons.favorite_border,
+              size: 28,
+              color: Colors.red, 
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -57,7 +78,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                         end: Alignment.bottomCenter,
                         colors: [
                           Colors.transparent,
-                          Colors.black.withValues(alpha: 0.7),
+                          Colors.black.withOpacity(0.7),
                         ],
                       ),
                     ),
@@ -122,7 +143,11 @@ class RestaurantDetailsPage extends StatelessWidget {
                         Text(
                           '${restaurant.rating.toStringAsFixed(1)} (234 reviews)',
                           style: TextStyle(
-                            color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.6),
+                            color: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.color
+                                ?.withOpacity(0.6),
                             fontSize: 14,
                           ),
                         ),
@@ -148,7 +173,11 @@ class RestaurantDetailsPage extends StatelessWidget {
                       restaurant.description,
                       style: TextStyle(
                         fontSize: 18,
-                        color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.8),
+                        color: Theme.of(context)
+                            .textTheme
+                            .bodyLarge
+                            ?.color
+                            ?.withOpacity(0.8),
                         height: 1.5,
                       ),
                       textAlign: TextAlign.justify,
@@ -185,7 +214,7 @@ class RestaurantDetailsPage extends StatelessWidget {
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text('Ainda nao fizemos esse requisito :)'),
+                    content: Text('Ainda não fizemos esse requisito :)'),
                     duration: Duration(seconds: 2),
                   ),
                 );

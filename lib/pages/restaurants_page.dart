@@ -7,6 +7,7 @@ import '../widgets/restaurant_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:remeal/controller/auth_provider.dart';
 import 'package:remeal/providers/category_provider.dart';
+import 'package:remeal/utils/preferences.dart'; 
 
 class RestaurantsPages extends ConsumerStatefulWidget {
   const RestaurantsPages({super.key});
@@ -17,6 +18,9 @@ class RestaurantsPages extends ConsumerStatefulWidget {
 
 class _RestaurantsPagesState extends ConsumerState<RestaurantsPages>
     with TickerProviderStateMixin {
+
+  List<String> searchHistory = []; 
+
   List<RestaurantModel> restaurants = [];
   List<RestaurantModel> filteredRestaurants = [];
   bool isLoading = true;
@@ -36,6 +40,7 @@ class _RestaurantsPagesState extends ConsumerState<RestaurantsPages>
   void initState() {
     super.initState();
     loadRestaurants();
+    loadSearchHistory();
 
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 300),
@@ -51,6 +56,34 @@ class _RestaurantsPagesState extends ConsumerState<RestaurantsPages>
     _searchController.dispose();
     super.dispose();
   }
+
+  Future<void> loadSearchHistory() async {
+    final history = await Preferences.getSearchHistory();
+    setState(() {
+      searchHistory = history;
+    });
+  }
+
+  void _saveSearch(String query) async {
+    final cleanQuery = query.trim();
+    if (cleanQuery.isEmpty) return; 
+
+    final updatedHistory = searchHistory.where((q) => q != cleanQuery).toList();
+
+    updatedHistory.insert(0, cleanQuery);
+
+    setState(() {
+      searchHistory = updatedHistory.take(3).toList(); 
+    });
+    
+    await Preferences.saveSearchHistory(searchHistory);
+  }
+  
+  void _useSearchHistory(String query) {
+    _searchController.text = query;
+    _toggleSearch(); 
+  }
+
 
   Future<void> loadRestaurants() async {
     try {
@@ -106,13 +139,16 @@ class _RestaurantsPagesState extends ConsumerState<RestaurantsPages>
     
     print('✅ Resultado: ${filteredRestaurants.length} restaurantes encontrados');
   }
-
+  
   void _toggleSearch() {
     setState(() {
       isSearchExpanded = !isSearchExpanded;
       if (isSearchExpanded) {
         _animationController.forward();
       } else {
+        if (_searchController.text.isNotEmpty) {
+          _saveSearch(_searchController.text);
+        }
         _animationController.reverse();
         _searchController.clear();
         FocusScope.of(context).unfocus();
@@ -124,7 +160,7 @@ class _RestaurantsPagesState extends ConsumerState<RestaurantsPages>
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        final selectedCategory = ref.read(categoryProvider);
+        final selectedCategory = ref.watch(categoryProvider); 
         return AlertDialog(
           title: const Text('Filtrar por Categoria'),
           content: Column(
@@ -194,6 +230,15 @@ class _RestaurantsPagesState extends ConsumerState<RestaurantsPages>
           Navigator.pushNamed(context, '/settings');
         },
       ),
+      // NOVO: Item de menu para a página de favoritos (se necessário)
+      // ListTile(
+      //   leading: const Icon(Icons.favorite),
+      //   title: const Text('Favoritos'),
+      //   onTap: () {
+      //     Navigator.pop(context);
+      //     Navigator.pushNamed(context, '/favorites');
+      //   },
+      // ),
       ListTile(
         leading: const Icon(Icons.logout),
         title: const Text('Logout'),
@@ -228,7 +273,7 @@ class _RestaurantsPagesState extends ConsumerState<RestaurantsPages>
           // Barra de pesquisa expansível
           AnimatedContainer(
             duration: const Duration(milliseconds: 300),
-            width: isSearchExpanded ? MediaQuery.of(context).size.width - 120 : 48,
+            width: isSearchExpanded ? MediaQuery.of(context).size.width - 120 : 48, 
             child: Row(
               children: [
                 if (isSearchExpanded)
@@ -296,6 +341,38 @@ class _RestaurantsPagesState extends ConsumerState<RestaurantsPages>
           ? const Center(child: CircularProgressIndicator())
           : Column(
               children: [
+                //Exibe o histórico de pesquisa
+                if (isSearchExpanded && 
+                    _searchController.text.isEmpty && 
+                    searchHistory.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Pesquisas Recentes',
+                          style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Wrap(
+                          spacing: 8.0,
+                          children: searchHistory.map((query) {
+                            return ActionChip(
+                              avatar: const Icon(Icons.history, size: 18),
+                              label: Text(query),
+                              onPressed: () => _useSearchHistory(query),
+                            );
+                          }).toList(),
+                        ),
+                        const Divider(),
+                      ],
+                    ),
+                  ),
+                
                 // Indicador de filtros ativos
                 if (selectedCategory != null || _searchController.text.isNotEmpty)
                   Container(
@@ -305,7 +382,7 @@ class _RestaurantsPagesState extends ConsumerState<RestaurantsPages>
                     child: Wrap(
                       spacing: 8,
                       children: [
-                        if (selectedCategory != null)
+                        if (selectedCategory != null && selectedCategory.isNotEmpty) 
                           Chip(
                             label: Text(selectedCategory),
                             deleteIcon: const Icon(Icons.close, size: 18),

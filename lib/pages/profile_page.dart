@@ -1,13 +1,14 @@
 import 'dart:convert';
-import 'package:remeal/widgets/drawer.dart';
-import 'package:remeal/pages/profile_settings.dart';
-import 'about_page.dart';
-import 'package:remeal/widgets/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../models/user_review.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:remeal/controller/auth_provider.dart';
+import '../models/user_review.dart';
+import 'package:remeal/widgets/drawer.dart';
+import 'about_page.dart';
+import 'profile_settings.dart';
+import 'package:remeal/controller/favorite_controller.dart';
+
 
 class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
@@ -17,66 +18,171 @@ class ProfilePage extends ConsumerStatefulWidget {
 }
 
 class _ProfilePageState extends ConsumerState<ProfilePage> {
+  bool isLoading = false;
+  String currentSection = "";
   List<UserReview> reviews = [];
-  bool isLoading = true;
 
   void _logout() {
-    Navigator.pop(context); // Fecha o drawer
+    Navigator.pop(context);
     ref.read(authControllerProvider.notifier).logout();
-    // O AuthChecker vai redirecionar automaticamente para o Login
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    loadReviews();
   }
 
   Future<void> loadReviews() async {
+    setState(() => isLoading = true);
+
     try {
-      final String jsonString =
+      final jsonString =
           await rootBundle.loadString('lib/data/mock_data_user.json');
+
       final List<dynamic> jsonData = json.decode(jsonString);
 
       setState(() {
-        reviews = jsonData
-            .map((json) => UserReview.fromJson(json))
-            .toList();
+        reviews = jsonData.map((json) => UserReview.fromJson(json)).toList();
         isLoading = false;
       });
     } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
-      print('Erro ao carregar as avaliações: $e');
+      print("Erro ao carregar avaliações: $e");
+      setState(() => isLoading = false);
     }
   }
 
-  List<Widget> _drawerItems() {
-    return [
-      ListTile(
-        leading: const Icon(Icons.info),
-        title: const Text('About'),
-        onTap: () {
-          Navigator.pop(context);
-          Navigator.pushNamed(context, '/about');
-        },
-      ),
-      ListTile(
-        leading: const Icon(Icons.settings),
-        title: const Text('Configurações'),
-        onTap: () {
-          Navigator.pop(context);
-          Navigator.pushNamed(context, '/settings');
-        },
-      ),
-      ListTile(
-        leading: const Icon(Icons.logout),
-        title: const Text('Logout'),
-        onTap: () => _logout(),
-      ),
-    ];
+  Widget _buildSection() {
+  if (currentSection == "reviews") {
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (reviews.isEmpty) {
+      return const Center(child: Text("Nenhuma avaliação encontrada"));
+    }
+
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      itemCount: reviews.length,
+      itemBuilder: (context, index) {
+        final review = reviews[index];
+        return Card(
+          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+          child: ListTile(
+            leading: Image.network(
+              review.imageUrl,
+              width: 60,
+              height: 60,
+              fit: BoxFit.cover,
+            ),
+            title: Text(review.restaurantName,
+                style: const TextStyle(fontWeight: FontWeight.bold)),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(review.comment,
+                    maxLines: 2, overflow: TextOverflow.ellipsis),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    Row(
+                      children: List.generate(5, (i) {
+                        return Icon(
+                          i < review.rating.round()
+                              ? Icons.star
+                              : Icons.star_border,
+                          color: Colors.amber,
+                          size: 18,
+                        );
+                      }),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(review.date,
+                        style:
+                            const TextStyle(color: Colors.grey, fontSize: 12)),
+                  ],
+                ),
+              ],
+            ),
+            isThreeLine: true,
+          ),
+        );
+      },
+    );
   }
+
+  // ---------- FAVORITOS ----------
+  if (currentSection == "favorites") {
+    final favState = ref.watch(favoriteControllerProvider);
+
+    return favState.when(
+      loading: () => const Center(
+        child: CircularProgressIndicator(),
+      ),
+      error: (err, st) => Center(
+        child: Text("Erro: $err"),
+      ),
+      data: (favoriteIds) {
+        if (favoriteIds.isEmpty) {
+          return const Center(
+            child: Text(
+              "Nenhum restaurante favoritado ainda",
+              style: TextStyle(fontSize: 16),
+            ),
+          );
+        }
+
+        return FutureBuilder<List<dynamic>>(
+          future: ref.read(favoriteControllerProvider.notifier).loadFavoriteRestaurants(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            final favorites = snapshot.data!;
+
+            return ListView.builder(
+              itemCount: favorites.length,
+              itemBuilder: (context, index) {
+                final res = favorites[index];
+
+                return Card(
+                  margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                  child: ListTile(
+                    leading: Image.network(
+                      res['imagem'],
+                      width: 60,
+                      height: 60,
+                      fit: BoxFit.cover,
+                    ),
+                    title: Text(
+                      res['nome'],
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(res['categoria']),
+                    trailing: IconButton(
+                      icon: Icon(
+                        Icons.favorite,
+                        color: Colors.red,
+                      ),
+                      onPressed: () async {
+                        await ref
+                            .read(favoriteControllerProvider.notifier)
+                            .toggleFavorite(res['id']);
+                        setState(() {}); 
+                      },
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+        );
+      },
+    );
+  }
+
+
+  return const Center(
+    child: Text("Selecione uma opção acima", style: TextStyle(fontSize: 16)),
+  );
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -84,77 +190,67 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("My Reviews"),
+        title: const Text("Meu Perfil"),
         centerTitle: true,
       ),
-      drawer: DrawerWidget(drawerItems: _drawerItems(), user: user),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : reviews.isEmpty
-              ? const Center(
-                  child: Text(
-                    'Nenhuma avaliação encontrada',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                )
-              : ListView.builder(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  itemCount: reviews.length,
-                  itemBuilder: (context, index) {
-                    final review = reviews[index];
-                    return Card(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 12),
-                      child: ListTile(
-                        leading: Image.network(
-                          review.imageUrl,
-                          width: 60,
-                          height: 60,
-                          fit: BoxFit.cover,
-                        ),
-                        title: Text(
-                          review.restaurantName,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              review.comment,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            const SizedBox(height: 4),
-                            Row(
-                              children: [
-                                Row(
-                                  children: List.generate(5, (starIndex) {
-                                    return Icon(
-                                      starIndex < review.rating.round()
-                                          ? Icons.star
-                                          : Icons.star_border,
-                                      color: Colors.amber,
-                                      size: 18,
-                                    );
-                                  }),
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  review.date,
-                                  style: const TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        isThreeLine: true,
-                      ),
-                    );
-                  },
-                ),
+      drawer: DrawerWidget(
+        drawerItems: [
+          ListTile(
+            leading: const Icon(Icons.info),
+            title: const Text('About'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/about');
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.settings),
+            title: const Text('Configurações'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/settings');
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.logout),
+            title: const Text('Logout'),
+            onTap: _logout,
+          ),
+        ],
+        user: user,
+      ),
+      body: Column(
+        children: [
+          const SizedBox(height: 16),
+
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                onPressed: () async {
+                  setState(() => currentSection = "reviews");
+                  await loadReviews();
+                },
+                child: const Text("Minhas Avaliações"),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() => currentSection = "favorites");
+                },
+                child: const Text("Restaurantes Favoritos"),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 16),
+
+
+          Expanded(
+            child: _buildSection(),
+          ),
+        ],
+      ),
     );
   }
 }
