@@ -38,28 +38,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               },
             ),
             const SizedBox(height: 24),
-            DropdownButtonFormField<String>(
-              value: selectedCategory,
-              items: [
-                const DropdownMenuItem(
-                  value: null,
-                  child: Text('Todas as categorias'),
-                ),
-                ..._categories
-                    .map((cat) => DropdownMenuItem(
-                          value: cat,
-                          child: Text(cat),
-                        ))
-                    .toList(),
-              ],
-              onChanged: (value) {
-                ref.read(categoryProvider.notifier).setCategory(value);
-              },
-              decoration: const InputDecoration(
-                labelText: 'Categoria preferida',
-                border: OutlineInputBorder(),
-              ),
-            ),
           ],
         ),
       ),
