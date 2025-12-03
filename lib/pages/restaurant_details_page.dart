@@ -2,14 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/restaurant_model.dart';
 import '../controller/favorite_controller.dart';
+import 'review_page.dart';
 
 class RestaurantDetailsPage extends ConsumerWidget {
   const RestaurantDetailsPage({super.key, required this.restaurant});
   final RestaurantModel restaurant;
 
+  //Navega para a página de avaliação
+  void _navigateToReviewPage(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => ReviewPage(restaurant: restaurant),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final favoritesState = ref.watch(favoriteControllerProvider);
+    final _ = ref.watch(favoriteControllerProvider);
 
     final favoriteNotifier = ref.watch(favoriteControllerProvider.notifier);
     
@@ -211,14 +221,7 @@ class RestaurantDetailsPage extends ConsumerWidget {
             width: double.infinity,
             height: 50,
             child: ElevatedButton(
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Ainda não fizemos esse requisito :)'),
-                    duration: Duration(seconds: 2),
-                  ),
-                );
-              },
+              onPressed: () => _navigateToReviewPage(context), 
               style: ElevatedButton.styleFrom(
                 backgroundColor: Theme.of(context).colorScheme.primary,
                 foregroundColor: Theme.of(context).colorScheme.onPrimary,

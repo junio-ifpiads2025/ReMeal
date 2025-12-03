@@ -1,13 +1,9 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:remeal/controller/auth_provider.dart';
-import '../models/user_review.dart';
 import 'package:remeal/widgets/drawer.dart';
-import 'about_page.dart';
-import 'profile_settings.dart';
 import 'package:remeal/controller/favorite_controller.dart';
+import '../controller/user_review_controller.dart';
 
 
 class ProfilePage extends ConsumerStatefulWidget {
@@ -18,93 +14,78 @@ class ProfilePage extends ConsumerStatefulWidget {
 }
 
 class _ProfilePageState extends ConsumerState<ProfilePage> {
-  bool isLoading = false;
   String currentSection = "";
-  List<UserReview> reviews = [];
 
   void _logout() {
     Navigator.pop(context);
     ref.read(authControllerProvider.notifier).logout();
   }
 
-  Future<void> loadReviews() async {
-    setState(() => isLoading = true);
-
-    try {
-      final jsonString =
-          await rootBundle.loadString('lib/data/mock_data_user.json');
-
-      final List<dynamic> jsonData = json.decode(jsonString);
-
-      setState(() {
-        reviews = jsonData.map((json) => UserReview.fromJson(json)).toList();
-        isLoading = false;
-      });
-    } catch (e) {
-      print("Erro ao carregar avaliações: $e");
-      setState(() => isLoading = false);
-    }
-  }
 
   Widget _buildSection() {
-  if (currentSection == "reviews") {
-    if (isLoading) {
-      return const Center(child: CircularProgressIndicator());
-    }
+    if (currentSection == "reviews") {
+      final reviewState = ref.watch(userReviewControllerProvider);
 
-    if (reviews.isEmpty) {
-      return const Center(child: Text("Nenhuma avaliação encontrada"));
-    }
+      return reviewState.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (err, st) => Center(child: Text("Erro ao carregar avaliações: $err")),
+        data: (reviews) {
+          if (reviews.isEmpty) {
+            return const Center(child: Text("Nenhuma avaliação encontrada"));
+          }
 
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      itemCount: reviews.length,
-      itemBuilder: (context, index) {
-        final review = reviews[index];
-        return Card(
-          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-          child: ListTile(
-            leading: Image.network(
-              review.imageUrl,
-              width: 60,
-              height: 60,
-              fit: BoxFit.cover,
-            ),
-            title: Text(review.restaurantName,
-                style: const TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(review.comment,
-                    maxLines: 2, overflow: TextOverflow.ellipsis),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    Row(
-                      children: List.generate(5, (i) {
-                        return Icon(
-                          i < review.rating.round()
-                              ? Icons.star
-                              : Icons.star_border,
-                          color: Colors.amber,
-                          size: 18,
-                        );
-                      }),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(review.date,
-                        style:
-                            const TextStyle(color: Colors.grey, fontSize: 12)),
-                  ],
+          // lista de reviews do controller
+          return ListView.builder(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            itemCount: reviews.length,
+            itemBuilder: (context, index) {
+              final review = reviews[index];
+              return Card(
+                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                child: ListTile(
+                  leading: Image.network(
+                    review.imageUrl,
+                    width: 60,
+                    height: 60,
+                    fit: BoxFit.cover,
+                  ),
+                  title: Text(review.restaurantName,
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(review.comment,
+                          maxLines: 2, overflow: TextOverflow.ellipsis),
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          Row(
+                            children: List.generate(5, (i) {
+                              return Icon(
+                                i < review.rating.round()
+                                    ? Icons.star
+                                    : Icons.star_border,
+                                color: Colors.amber,
+                                size: 18,
+                              );
+                            }),
+                          ),
+                          const SizedBox(width: 8),
+                          Text(review.date,
+                              style:
+                                  const TextStyle(color: Colors.grey, fontSize: 12)),
+                        ],
+                      ),
+                    ],
+                  ),
+                  isThreeLine: true,
                 ),
-              ],
-            ),
-            isThreeLine: true,
-          ),
-        );
-      },
-    );
-  }
+              );
+            },
+          );
+        },
+      );
+    }
 
   // ---------- FAVORITOS ----------
   if (currentSection == "favorites") {
@@ -230,7 +211,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               ElevatedButton(
                 onPressed: () async {
                   setState(() => currentSection = "reviews");
-                  await loadReviews();
                 },
                 child: const Text("Minhas Avaliações"),
               ),

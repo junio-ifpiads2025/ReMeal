@@ -1,9 +1,11 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 class Preferences {
   static const String themeKey = 'isDarkMode';
   static const String categoryKey = 'lastCategory';
   static const String favoritesKey = 'favoriteRestaurants';
+  static const String userReviewsKey = 'userReviews';
   
 
   static const String searchHistoryKey = 'searchHistory'; 
@@ -51,7 +53,6 @@ class Preferences {
   }
   
   static List<int> getFavoriteListSync() {
-    final prefs = SharedPreferences.getInstance();
     throw Exception("getFavoriteListSync precisa ser assíncrono!");
   }
   
@@ -59,5 +60,21 @@ class Preferences {
     final prefs = await SharedPreferences.getInstance();
     final stringList = ids.map((e) => e.toString()).toList();
     await prefs.setStringList(favoritesKey, stringList);
+  }
+  static Future<void> saveUserReviews(List<Map<String, dynamic>> reviewsJson) async {
+    final prefs = await SharedPreferences.getInstance();
+    final String jsonString = json.encode(reviewsJson); 
+    await prefs.setString(userReviewsKey, jsonString);
+  }
+
+  static Future<List<Map<String, dynamic>>> getUserReviews() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? jsonString = prefs.getString(userReviewsKey);
+    
+    if (jsonString == null || jsonString.isEmpty) {
+      return [];
+    }
+    final List<dynamic> jsonList = json.decode(jsonString);
+    return jsonList.cast<Map<String, dynamic>>(); 
   }
 }
