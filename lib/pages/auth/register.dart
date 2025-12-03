@@ -60,6 +60,7 @@ class _RegisterState extends ConsumerState<Register> {
               backgroundColor: Colors.green,
             ),
           );
+          Navigator.pop(context);
           // OBS: O AuthChecker vai redirecionar automaticamente se o usuário foi logado
         }
       } catch (e) {
