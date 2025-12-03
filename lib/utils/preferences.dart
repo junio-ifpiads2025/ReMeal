@@ -4,11 +4,10 @@ import 'dart:convert';
 class Preferences {
   static const String themeKey = 'isDarkMode';
   static const String categoryKey = 'lastCategory';
-  static const String favoritesKey = 'favoriteRestaurants';
-  static const String userReviewsKey = 'userReviews';
-  
-
   static const String searchHistoryKey = 'searchHistory'; 
+  
+  static String _getFavoritesKey(String userId) => 'favoriteRestaurants_$userId';
+  static String _getReviewsKey(String userId) => 'userReviews_$userId';
 
   static Future<void> saveSearchHistory(List<String> history) async {
     final prefs = await SharedPreferences.getInstance();
@@ -40,15 +39,15 @@ class Preferences {
     return prefs.getString(categoryKey);
   }
   
-  static Future<void> setFavoriteIds(List<int> ids) async {
+  static Future<void> setFavoriteIds(String userId, List<int> ids) async {
     final prefs = await SharedPreferences.getInstance();
     final idsStr = ids.map((e) => e.toString()).toList();
-    await prefs.setStringList(favoritesKey, idsStr);
+    await prefs.setStringList(_getFavoritesKey(userId), idsStr);
   }
   
-  static Future<List<int>> getFavoriteIds() async {
+  static Future<List<int>> getFavoriteIds(String userId) async {
     final prefs = await SharedPreferences.getInstance();
-    final idsStr = prefs.getStringList(favoritesKey) ?? [];
+    final idsStr = prefs.getStringList(_getFavoritesKey(userId)) ?? [];
     return idsStr.map(int.parse).toList();
   }
   
@@ -56,20 +55,20 @@ class Preferences {
     throw Exception("getFavoriteListSync precisa ser assíncrono!");
   }
   
-  static Future<void> saveFavoriteList(List<int> ids) async {
+  static Future<void> saveFavoriteList(String userId, List<int> ids) async {
     final prefs = await SharedPreferences.getInstance();
     final stringList = ids.map((e) => e.toString()).toList();
-    await prefs.setStringList(favoritesKey, stringList);
+    await prefs.setStringList(_getFavoritesKey(userId), stringList);
   }
-  static Future<void> saveUserReviews(List<Map<String, dynamic>> reviewsJson) async {
+  static Future<void> saveUserReviews(String userId, List<Map<String, dynamic>> reviewsJson) async {
     final prefs = await SharedPreferences.getInstance();
     final String jsonString = json.encode(reviewsJson); 
-    await prefs.setString(userReviewsKey, jsonString);
+    await prefs.setString(_getReviewsKey(userId), jsonString);
   }
 
-  static Future<List<Map<String, dynamic>>> getUserReviews() async {
+  static Future<List<Map<String, dynamic>>> getUserReviews(String userId) async {
     final prefs = await SharedPreferences.getInstance();
-    final String? jsonString = prefs.getString(userReviewsKey);
+    final String? jsonString = prefs.getString(_getReviewsKey(userId));
     
     if (jsonString == null || jsonString.isEmpty) {
       return [];
