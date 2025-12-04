@@ -72,6 +72,7 @@ favoritos, filtros e avaliações.
 ## 📱 Screenshots 
 
 <p float="left"> <img src="https://github.com/junio-ifpiads2025/ReMeal/blob/main/images/1.jpeg" width="400" /> <img src="https://github.com/junio-ifpiads2025/ReMeal/blob/main/images/2.jpeg" width="400" /> </p> <p float="left"> <img src="https://github.com/junio-ifpiads2025/ReMeal/blob/main/images/3.jpeg" width="400" /> <img src="https://github.com/junio-ifpiads2025/ReMeal/blob/main/images/4.jpeg" width="400" /> </p>
+<p float="left"> <img src="https://github.com/junio-ifpiads2025/ReMeal/blob/main/images/5.jpeg" width="400" /> <img src="https://github.com/junio-ifpiads2025/ReMeal/blob/main/images/6.jpeg" width="400" /> </p> <p float="left"> <img src="https://github.com/junio-ifpiads2025/ReMeal/blob/main/images/7.jpeg" width="400" /> <img src="https://github.com/junio-ifpiads2025/ReMeal/blob/main/images/8.jpeg" width="400" /> </p>
 
 ------------------------------------------------------------------------
 
