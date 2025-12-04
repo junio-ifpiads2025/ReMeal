@@ -206,19 +206,26 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
 
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.center,
+
             children: [
               ElevatedButton(
                 onPressed: () async {
                   setState(() => currentSection = "reviews");
                 },
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(150, 40),
+                ),
                 child: const Text("Minhas Avaliações"),
               ),
               ElevatedButton(
                 onPressed: () {
                   setState(() => currentSection = "favorites");
                 },
-                child: const Text("Restaurantes Favoritos"),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(150, 40),
+                ),
+                child: const Text("Favoritos"),
               ),
             ],
           ),
